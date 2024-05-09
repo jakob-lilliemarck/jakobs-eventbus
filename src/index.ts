@@ -1,2 +1,9 @@
 export { Bus } from './eventbus'
-export { logging } from './middleware'
+
+export type {
+    Handler,
+    Factory,
+    Event,
+    Module,
+    Middleware,
+} from './eventbus.model'

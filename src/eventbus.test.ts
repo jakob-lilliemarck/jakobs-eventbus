@@ -1,16 +1,16 @@
 import { describe, expect, test } from '@jest/globals';
 import { Bus } from './eventbus'
 import type {
-    Ev,
-    Mo,
-    Mi,
-    Factory,
     Handler,
+    Factory,
+    Event,
+    Module,
+    Middleware,
 } from './eventbus.model'
 
-type EventA = Ev<'a', number>
-type EventB = Ev<'b', string>
-type EventC = Ev<'c', boolean>
+type EventA = Event<'a', number>
+type EventB = Event<'b', string>
+type EventC = Event<'c', boolean>
 
 type FactoryA = Factory<'a', number>
 type FactoryB = Factory<'b', string>
@@ -20,9 +20,9 @@ type HandlerA = Handler<'a', number, EventB | EventC>
 type HandlerB = Handler<'b', string, EventC>
 type HandlerC = Handler<'c', boolean, never>
 
-type ModuleA = Mo<'a', number, EventB | EventC>
-type ModuleB = Mo<'b', string, EventC>
-type ModuleC = Mo<'c', boolean, never>
+type ModuleA = Module<'a', number, EventB | EventC>
+type ModuleB = Module<'b', string, EventC>
+type ModuleC = Module<'c', boolean, never>
 
 describe('Jakobs eventbus', () => {
     test('Test the eventbus', async () => {
@@ -34,12 +34,12 @@ describe('Jakobs eventbus', () => {
         const idMiddlewareA = 'middleware_a'
         const idMiddlewareB = 'middleware_b'
 
-        const middlewareA: Mi = (next) => async (event, dispatch) => {
+        const middlewareA: Middleware = (next) => async (event, dispatch) => {
             middlewareResult.push(idMiddlewareA)
             return next(event, dispatch)
         }
 
-        const middlewareB: Mi = (next) => async (event, dispatch) => {
+        const middlewareB: Middleware = (next) => async (event, dispatch) => {
             middlewareResult.push(idMiddlewareB)
             return next(event, dispatch)
         }

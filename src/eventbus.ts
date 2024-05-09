@@ -1,7 +1,7 @@
 import type {
-    Ev,
-    Mo,
-    Mi,
+    Event,
+    Module,
+    Middleware,
     IBus,
     Topics,
     Handlers,
@@ -9,15 +9,15 @@ import type {
     Factories
 } from './eventbus.model'
 
-export class Bus<Events extends Ev<string, any> = never> implements IBus<Events> {
-    private middlewares: Array<Mi>
+export class Bus<V extends Event<string, any> = never> implements IBus<V> {
+    private middlewares: Array<Middleware>
     private topics: Topics;
     private handlers: Handlers;
     private symbols: Symbols;
     private factories: Factories;
 
     constructor(
-        middlewares: Array<Mi> = [],
+        middlewares: Array<Middleware> = [],
         topics: Topics = {},
         handlers: Handlers = {},
         symbols: Symbols = {},
@@ -30,7 +30,7 @@ export class Bus<Events extends Ev<string, any> = never> implements IBus<Events>
         this.factories = factories
     }
 
-    subscribe<T extends string, U, E extends Events>(module: Mo<T, U, E>): Bus<Events | Ev<T, U>> {
+    subscribe<T extends string, U, E extends V>(module: Module<T, U, E>): Bus<V | Event<T, U>> {
         const symbol = Symbol(module.topic)
         const topics = Object
             .entries(this.topics)
@@ -42,7 +42,7 @@ export class Bus<Events extends Ev<string, any> = never> implements IBus<Events>
         const handlers = { ...this.handlers, [symbol]: module.handler }
         const symbols = { ...this.symbols, [symbol]: module.topic }
         const factories = { ...this.factories, [symbol]: module.factory }
-        return new Bus<Events | Ev<T, U>>(
+        return new Bus<V | Event<T, U>>(
             this.middlewares,
             topics,
             handlers,
@@ -51,7 +51,7 @@ export class Bus<Events extends Ev<string, any> = never> implements IBus<Events>
         );
     }
 
-    dispatch<E extends Events>(event: E): Array<Promise<void>> {
+    dispatch<E extends V>(event: E): Array<Promise<void>> {
         const symbols = this.topics[event.topic]
         if (symbols && symbols.length > 0) {
             return this.topics[event.topic].reduce((promises, symbol) => {

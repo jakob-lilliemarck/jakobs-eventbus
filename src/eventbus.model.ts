@@ -1,19 +1,19 @@
-export type Handler<T extends string, U, V = never> = (event: Ev<T, U>, dispatch: Dispatch<V>) => Promise<void>
+export type Handler<T extends string, U, V = never> = (event: Event<T, U>, dispatch: Dispatch<V>) => Promise<void>
 
-export type Factory<T extends string, U> = (data: U) => Ev<T, U>
+export type Factory<T extends string, U> = (data: U) => Event<T, U>
 
-export interface Mo<T extends string, U, Events> {
+export interface Module<T extends string, U, V> {
     topic: T,
-    handler: Handler<T, U, Events>
+    handler: Handler<T, U, V>
     factory: Factory<T, U>
 }
 
-export interface Ev<T extends string, U> {
+export interface Event<T extends string, U> {
     topic: T,
     data: U
 }
 
-export interface Mi {
+export interface Middleware {
     <T extends string, U, V>(next: Handler<T, U, V>): Handler<T, U, V>
 }
 
@@ -27,6 +27,6 @@ export type Dispatch<T> = (event: T) => void
 
 export type Factories = { [key: symbol]: Factory<string, any> }
 
-export interface IBus<T extends Ev<string, any>> {
+export interface IBus<T extends Event<string, any>> {
     dispatch: Dispatch<T>
 }

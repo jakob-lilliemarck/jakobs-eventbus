@@ -13,9 +13,7 @@ export interface Event<T extends string, U> {
     data: U
 }
 
-export interface Middleware {
-    <T extends string, U, V>(next: Handler<T, U, V>): Handler<T, U, V>
-}
+export type Middleware = <T extends string, U, V>(next: Handler<T, U, V>) => Handler<T, U, V>
 
 export type Topics = { [key: string]: Array<symbol> }
 
@@ -27,6 +25,6 @@ export type Dispatch<T> = (event: T) => void
 
 export type Factories = { [key: symbol]: Factory<string, any> }
 
-export interface IBus<T extends Event<string, any>> {
+export interface IBus<T extends Event<string, any> = never> {
     dispatch: Dispatch<T>
 }

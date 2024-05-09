@@ -1,0 +1,38 @@
+{
+  "name": "jakobs-eventbus",
+  "version": "1.0.0",
+  "description": "A typesafe eventbus without any external dependencies",
+  "keywords": [
+    "event",
+    "events",
+    "eventbus",
+    "typesafe",
+    "no-deps"
+  ],
+  "author": "Jakob Lilliemarck",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jakob-lilliemarck/jakobs-eventbus"
+  },
+  "bugs": {
+    "url": "https://github.com/jakob-lilliemarck/jakobs-eventbus/issues"
+  },
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@types/node": "^20.12.11",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
